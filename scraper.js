@@ -8,15 +8,15 @@ function initDatabase(callback) {
 	// Set up sqlite database.
 	var db = new sqlite3.Database("data.sqlite");
 	db.serialize(function() {
-		db.run("CREATE TABLE IF NOT EXISTS data (name TEXT)");
+		db.run("CREATE TABLE IF NOT EXISTS data (name TEXT, desc TEXT, link TEXT)");
 		callback(db);
 	});
 }
 
-function updateRow(db, value) {
+function updateRow(db, name, description, link) {
 	// Insert some data.
-	var statement = db.prepare("INSERT INTO data VALUES (?)");
-	statement.run(value);
+	var statement = db.prepare("INSERT INTO data VALUES (?, ?, ?)");
+	statement.run(name, description, link);
 	statement.finalize();
 }
 
@@ -39,15 +39,29 @@ function fetchPage(url, callback) {
 	});
 }
 
+var BASE_URL = "http://www.phrases.org.uk/meanings/";
+
 function run(db) {
 	// Use request to read in pages.
-	fetchPage("http://www.phrases.org.uk/meanings/phrases-and-sayings-list.html", function (body) {
+	fetchPage(BASE_URL + "phrases-and-sayings-list.html", function (body) {
 		// Use cheerio to find things in the page with css selectors.
 		var $ = cheerio.load(body);
 
-		var elements = $("p.phrase-list a").each(function () {
-			var value = $(this).text().trim();
-			updateRow(db, value);
+		$("p.phrase-list a").each(function () {
+
+			var phraseLink = $(this).href();
+
+      fetchPage(BASE_URL + phraseLink, function (phraseBody) {
+
+        var $ = cheerio.load(phraseBody);
+
+        var phraseTitle = $(".content h1").text().trim();
+        var phraseDesc = $(".meanings-body").text().trim();
+        var phraseUrl = $(BASE_URL + phraseLink)
+
+        updateRow(db, phraseTitle, phraseDesc, phraseUrl);
+      };
+
 		});
 
 		readRows(db);

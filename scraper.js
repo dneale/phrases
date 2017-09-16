@@ -41,11 +41,11 @@ function fetchPage(url, callback) {
 
 function run(db) {
 	// Use request to read in pages.
-	fetchPage("https://morph.io", function (body) {
+	fetchPage("http://www.phrases.org.uk/meanings/phrases-and-sayings-list.html", function (body) {
 		// Use cheerio to find things in the page with css selectors.
 		var $ = cheerio.load(body);
 
-		var elements = $("div.media-body span.p-name").each(function () {
+		var elements = $("p.phrase-list a").each(function () {
 			var value = $(this).text().trim();
 			updateRow(db, value);
 		});

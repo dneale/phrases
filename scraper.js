@@ -53,16 +53,18 @@ function run(db) {
 
 			var phraseLink = $(this).href;
 
-      fetchPage(BASE_URL + phraseLink, function (phraseBody) {
+			console.log(phraseLink);
 
-        var $ = cheerio.load(phraseBody);
-
-        var phraseTitle = $(".content h1").text().trim();
-        var phraseDesc = $(".meanings-body").text().trim();
-        var phraseUrl = $(BASE_URL + phraseLink)
-
-        updateRow(db, phraseTitle, phraseDesc, phraseUrl);
-      });
+      // fetchPage(BASE_URL + phraseLink, function (phraseBody) {
+      //
+      //   var $ = cheerio.load(phraseBody);
+      //
+      //   var phraseTitle = $(".content h1").text().trim();
+      //   var phraseDesc = $(".meanings-body").text().trim();
+      //   var phraseUrl = $(BASE_URL + phraseLink)
+      //
+      //   updateRow(db, phraseTitle, phraseDesc, phraseUrl);
+      // });
 
 		});
 

@@ -75,7 +75,10 @@ function run(db) {
 			console.log("gonna close the db");
       readRows(db);
       db.close();
-		});
+		})
+			.catch(function(e) {
+				console.log("error was " + e);
+			});
 
 	});
 }

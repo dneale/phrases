@@ -63,7 +63,7 @@ function run(db) {
         var $ = cheerio.load(phraseBody);
 
         var phraseTitle = $(".content h1").text().trim();
-        var phraseDesc = $(".meanings-body")[0].text().trim();
+        var phraseDesc = $(".meanings-body").first().text().trim();
         var phraseUrl = BASE_URL + phraseLink;
 
         updateRow(db, phraseTitle, phraseDesc, phraseUrl);

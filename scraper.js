@@ -49,7 +49,7 @@ function run(db) {
 
 		$("p.phrase-list a").each(function () {
 
-			var phraseLink = $(this).href();
+			var phraseLink = $(this).href;
 
       fetchPage(BASE_URL + phraseLink, function (phraseBody) {
 

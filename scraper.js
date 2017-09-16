@@ -63,7 +63,7 @@ function run(db) {
         var $ = cheerio.load(phraseBody);
 
         var phraseTitle = $(".content h1").text().trim();
-        var phraseDesc = $(".meanings-body").text().trim();
+        var phraseDesc = $(".meanings-body")[0].text().trim();
         var phraseUrl = BASE_URL + phraseLink;
 
         console.log("about to push " + phraseTitle);

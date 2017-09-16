@@ -3,10 +3,9 @@
   "main": "scraper.js",
   "dependencies": {
     "bluebird": "^3.5.0",
-    "cheerio": "latest",
-    "request": "latest",
+    "cheerio": "^1.0.0-rc.2",
     "request-promise": "^4.2.1",
-    "sqlite3": "latest"
+    "sqlite3": "^3.1.11"
   },
   "keywords": [
     "scraper",

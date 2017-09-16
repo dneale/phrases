@@ -15,9 +15,11 @@ function initDatabase(callback) {
 
 function updateRow(db, name, description, link) {
 	// Insert some data.
-	var statement = db.prepare("INSERT INTO data VALUES (?, ?, ?)");
-	statement.run(name, description, link);
-	statement.finalize();
+	if (name && description && link) {
+    var statement = db.prepare("INSERT INTO data VALUES (?, ?, ?)");
+    statement.run(name, description, link);
+    statement.finalize();
+	}
 }
 
 function readRows(db) {

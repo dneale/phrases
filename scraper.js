@@ -60,7 +60,7 @@ function run(db) {
         var phraseUrl = $(BASE_URL + phraseLink)
 
         updateRow(db, phraseTitle, phraseDesc, phraseUrl);
-      };
+      });
 
 		});
 

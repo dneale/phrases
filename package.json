@@ -2,8 +2,10 @@
   "version": "0.0.1",
   "main": "scraper.js",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "cheerio": "latest",
     "request": "latest",
+    "request-promise": "^4.2.1",
     "sqlite3": "latest"
   },
   "keywords": [

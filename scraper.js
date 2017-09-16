@@ -1,8 +1,9 @@
 // This is a template for a Node.js scraper on morph.io (https://morph.io)
 
 var cheerio = require("cheerio");
-var request = require("request");
+var request = require("request-promise");
 var sqlite3 = require("sqlite3").verbose();
+var bluebird = require("bluebird");
 
 function initDatabase(callback) {
 	// Set up sqlite database.
@@ -31,7 +32,7 @@ function readRows(db) {
 
 function fetchPage(url, callback) {
 	// Use request to read in pages.
-	request(url, function (error, response, body) {
+	return request(url, function (error, response, body) {
 		if (error) {
 			console.log("Error requesting page: " + error);
 			return;
@@ -49,28 +50,37 @@ function run(db) {
 		// Use cheerio to find things in the page with css selectors.
 		var $ = cheerio.load(body);
 
+		var pages = [];
+
+
 		$("p.phrase-list a").each(function () {
 
-			var phraseLink = $(this).href;
+			var phraseLink = $(this).attr('href');
 
-			console.log(phraseLink);
+      pages.push(fetchPage(BASE_URL + phraseLink, function (phraseBody) {
 
-      // fetchPage(BASE_URL + phraseLink, function (phraseBody) {
-      //
-      //   var $ = cheerio.load(phraseBody);
-      //
-      //   var phraseTitle = $(".content h1").text().trim();
-      //   var phraseDesc = $(".meanings-body").text().trim();
-      //   var phraseUrl = $(BASE_URL + phraseLink)
-      //
-      //   updateRow(db, phraseTitle, phraseDesc, phraseUrl);
-      // });
+
+        var $ = cheerio.load(phraseBody);
+
+        var phraseTitle = $(".content h1").text().trim();
+        var phraseDesc = $(".meanings-body").text().trim();
+        var phraseUrl = BASE_URL + phraseLink;
+
+        console.log("about to push " + phraseTitle);
+
+        updateRow(db, phraseTitle, phraseDesc, phraseUrl);
+      }));
 
 		});
 
-		readRows(db);
+		console.log(pages);
 
-		db.close();
+		bluebird.all(pages).then (function() {
+			console.log("gonna close the db");
+      readRows(db);
+      db.close();
+		});
+
 	});
 }
 

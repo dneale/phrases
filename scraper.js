@@ -73,8 +73,6 @@ function run(db) {
 
 		});
 
-		console.log(pages);
-
 		bluebird.all(pages).then (function() {
 			console.log("gonna close the db");
       readRows(db);

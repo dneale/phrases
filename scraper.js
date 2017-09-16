@@ -66,8 +66,6 @@ function run(db) {
         var phraseDesc = $(".meanings-body")[0].text().trim();
         var phraseUrl = BASE_URL + phraseLink;
 
-        console.log("about to push " + phraseTitle);
-
         updateRow(db, phraseTitle, phraseDesc, phraseUrl);
       }));
 

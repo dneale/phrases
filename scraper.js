@@ -78,6 +78,8 @@ function run(db) {
 		})
 			.catch(function(e) {
 				console.log("error was " + e);
+        readRows(db);
+        db.close();
 			});
 
 	});
